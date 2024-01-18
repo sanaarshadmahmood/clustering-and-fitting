@@ -16,12 +16,22 @@ def get_data():
     return the dataframe object.
     :return: data
     """
+    # data file path
     file_path = 'API_NY.GDP.PCAP.CD_DS2_en_csv_v2_6298251.csv'
+
+    # read dataset file with pandas read_csv method
     data = pd.read_csv(file_path, skiprows=4)
 
+    # define non year column names
     non_year_columns = ['Country Code', 'Indicator Name', 'Indicator Code']
+
+    # drop non year columns from dataframe
     data = data.drop(columns=non_year_columns, errors='ignore')
+
+    # set dataframe index by Country Name
     data = data.set_index('Country Name')
+
+    # clean the dataframe
     data = data.replace('..', np.nan).dropna(axis=1, how='all').astype(float)
 
     data = data.ffill(axis=1).bfill(axis=1)
@@ -43,7 +53,9 @@ def linear_model(x, a, b):
     return calculated_value
 
 
+# set style with seaborn library
 sns.set(style="whitegrid")
+# set fond and figure size
 plt.rcParams.update({'font.size': 12, 'figure.figsize': (15, 8)})
 
 # call function to read dataset and get dataframe
@@ -57,6 +69,7 @@ data['Cluster'] = kmeans.labels_
 
 plt.figure(figsize=(18, 10))
 
+# iterate and data visualization using line plot
 for i in range(4):
     cluster_data = data[data['Cluster'] == i]
     for index, row in cluster_data.iterrows():
@@ -92,11 +105,15 @@ plt.ylabel('GDP per Capita', fontsize=14)
 plt.legend()
 plt.show()
 
+# loop over to range of elements
 for i in range(4):
     plt.figure(figsize=(15, 8))
     cluster_data = data[data['Cluster'] == i]
+
     for index, row in cluster_data.iterrows():
         plt.plot(row[data.columns[:-1]], label=index)
+
+    # set plot tite, labels, legends and show plot
     plt.title(f'GDP per Capita Trends in Cluster {i}', fontsize=16)
     plt.xlabel('Year', fontsize=14)
     plt.ylabel('GDP per Capita', fontsize=14)
@@ -109,6 +126,7 @@ spectral_model_rbf = SpectralClustering(n_clusters=5,
                                         affinity='nearest_neighbors')
 labels_spectral = spectral_model_rbf.fit_predict(X)
 
+# add figure and set figure size
 plt.figure(figsize=(12, 6))
 
 # make subplot and show the spectral clustering results using scatter plot
