@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 15 14:36:04 2024
+
+@author: HJ
+"""
+
+# Import necessary libraries
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -8,7 +16,7 @@ from sklearn.cluster import SpectralClustering
 from sklearn.datasets import make_blobs
 from sklearn.preprocessing import StandardScaler
 
-
+# Define a function to read and preprocess data from a CSV file
 def get_data():
     """
     This function read data from csv file using the pandas library,
@@ -38,7 +46,7 @@ def get_data():
     data = data.fillna(data.mean())
     return data
 
-
+# Define a linear model function for curve fitting
 def linear_model(x, a, b):
     """
     This function take three input parameters and calculate the fit
@@ -83,6 +91,7 @@ plt.ylabel('GDP per Capita (Normalized)', fontsize=14)
 plt.legend()
 plt.show()
 
+# Extract and plot linear model fitting for United States GDP per Capita
 us_data = data.loc['United States', data.columns[:-1]].dropna()
 years = np.array([int(year) for year in us_data.index])
 gdp_values = us_data.values
@@ -119,14 +128,14 @@ for i in range(4):
     plt.ylabel('GDP per Capita', fontsize=14)
     plt.legend()
     plt.show()
-
+# Create synthetic data for Spectral Clustering
 X, y = make_blobs(n_samples=200, centers=5, cluster_std=0.60, random_state=42)
-
+# Apply Spectral Clustering with RBF affinity
 spectral_model_rbf = SpectralClustering(n_clusters=5,
                                         affinity='nearest_neighbors')
 labels_spectral = spectral_model_rbf.fit_predict(X)
 
-# add figure and set figure size
+# Plot Spectral Clustering results and ground truth clustering
 plt.figure(figsize=(12, 6))
 
 # make subplot and show the spectral clustering results using scatter plot
