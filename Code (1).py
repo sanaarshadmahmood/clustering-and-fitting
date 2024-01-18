@@ -16,6 +16,7 @@ from sklearn.cluster import SpectralClustering
 from sklearn.datasets import make_blobs
 from sklearn.preprocessing import StandardScaler
 
+
 # Define a function to read and preprocess data from a CSV file
 def get_data():
     """
@@ -45,6 +46,7 @@ def get_data():
     data = data.ffill(axis=1).bfill(axis=1)
     data = data.fillna(data.mean())
     return data
+
 
 # Define a linear model function for curve fitting
 def linear_model(x, a, b):
